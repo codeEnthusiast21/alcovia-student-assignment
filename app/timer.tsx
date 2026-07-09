@@ -373,7 +373,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timeDigitWrapper: {
-    position: 'absolute',
     alignItems: 'center',
   },
   timeDigits: {

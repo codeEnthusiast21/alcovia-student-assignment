@@ -15,7 +15,17 @@
       "expo-asset"
     ],
     "android": {
-      "package": "com.aviral0980.alcoviastudent"
+      "package": "com.aviral0980.alcoviastudent",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "icon": "./assets/logo.png",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F5F6FA"
     }
   }
 }

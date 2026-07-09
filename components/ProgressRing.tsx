@@ -50,7 +50,11 @@ export const ProgressRing: React.FC<ProgressRingProps> = ({
           transform={`rotate(-90 ${center} ${center})`}
         />
       </Svg>
-      {children && <View style={StyleSheet.absoluteFillObject}>{children}</View>}
+      {children && (
+        <View style={[StyleSheet.absoluteFillObject, styles.childContainer]}>
+          {children}
+        </View>
+      )}
     </View>
   );
 };
@@ -60,5 +64,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+  },
+  childContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

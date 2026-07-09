@@ -1,129 +1,69 @@
-# Alcovia Student App - Assignment
+# Alcovia Student App - Submission
 
-**Time limit:** 48 hours from when you receive this.
+This repository contains my submission for the Alcovia Student focus application coding assignment. I have implemented all core requirements and successfully completed **three bonus challenges** (Focus Timer, Achievements Screen, and Animations & Polish).
 
-You're building screens for a student focus app, the API that powers them, and optionally an automation workflow. A design spec, starter code, and seed data are provided. What you build on top of them is your call.
+I designed and built the application screens, API routes, and backend business logic, utilizing AI assistance to optimize UI layouts, refine visual styles, and polish smooth transitions and skeleton animations.
 
 ---
 
-## Core Requirements
+## Completed Features & Deliverables
 
-Everyone must complete these. This is what you're evaluated on.
-
-### 1. Mobile app (React Native / Expo)
-
-| Screen | Spec level | What this means |
-|--------|-----------|-----------------|
-| Dashboard | **Fully specced** | Design reference has exact measurements, colors, spacing. Match it closely. |
-| History | **Partially specced** | Happy path is designed. Empty, loading, error, and pagination states are on you. |
-| Session Detail | **No spec** | Tapping a session in History should go somewhere useful. Figure out what. |
+### 1. Mobile App (React Native / Expo Router)
+- **Dashboard**: Built with pixel-perfect accuracy following the design spec's dimensions, colors, typography (Inter), spacing, and shadows.
+- **History Screen**: Completed with cursor-based pagination, scroll-to-load-more, pull-to-refresh, user-friendly offline error recovery states, and empty states.
+- **Session Detail Screen**: Created a detailed, connected vertical timeline showing focus intervals vs rest intervals, complete with a call-to-action loop to easily restart another session.
+- **Splash Screen & Adaptive Icon**: Refined the Android assets so that the logo renders cleanly on a native splash screen without any contrast outlines or borders.
 
 ### 2. Backend API (Express + SQLite)
+- Designed and built route handlers in TypeScript for:
+  - `GET /students/:id`
+  - `GET /students/:id/sessions` (supporting cursor-based pagination and horizontal scroll filter pills)
+  - `GET /students/:id/sessions/:sessionId`
+  - `GET /students/:id/stats`
+  - `GET /students/:id/achievements` (unlocked vs locked progress query)
+  - `POST /students/:id/sessions` (saves focus sessions, awards coins, and recalculates dynamic achievement progression)
 
-The database schema, seed script, and fixture data are provided in `server/`. You build the route handlers for these endpoints (documented in `API-SPEC.md`):
-
-- `GET /students/:id`
-- `GET /students/:id/sessions` (with cursor-based pagination and filters)
-- `GET /students/:id/sessions/:sessionId`
-- `GET /students/:id/stats?period=week`
-
-Pay attention to:
-- Cursor-based pagination (not offset)
-- The date format inconsistency between the sessions list and session detail endpoints (this is intentional, read the spec)
-- Input validation and error handling
-
-### 3. Documentation
-
-- **DECISIONS.md** - fill in every section with your actual reasoning. This matters as much as the code.
-- **Video demo** - 2-3 minute screen recording walking through your app. No narration required, but explain anything non-obvious.
+### 3. Bonus Challenges Completed
+- **B1. Focus Timer**: Implemented a fully functional timer supporting Deep Focus (25m), Quick Sprint (15m), and Pomodoro (50m) modes. Features a digital timer clock, an SVG progress ring that depletes as time progresses, and a fast-forward debug mode (starts at 3 seconds remaining) for easy grading verification.
+- **B2. Achievements Screen**: Designed a responsive grid display. Created a dynamic progression recalculator on the backend that evaluates student achievements in real-time when new focus sessions are posted. Clicking a badge displays its description and progress statistics in a slide-up details drawer.
+- **B5. Animations & Polish**:
+  - Implemented custom hardware-accelerated **pulsing skeleton loaders** on the Dashboard and History screens to eliminate layout shifts during data loading.
+  - Added staggered transition entry animations for dashboard components on load.
+  - Integrated tactile haptic feedback on button triggers and navigation actions.
 
 ---
 
-## Bonus Challenges
+## Getting Started
 
-These are optional. Complete any 2 or more and you're **guaranteed an interview**, regardless of how polished the core is.
+### Prerequisites
+Ensure you have Node.js and npm installed.
 
-### B1. Focus Timer
-Build a Focus Timer screen accessible from the Dashboard's "Start Session" button. There is no design for this - you decide everything: timer UI, session type selection, pause/resume, and what happens when a session completes. Must POST to the `POST /students/:id/sessions` endpoint on completion.
+### Setup and Running
 
-### B2. Achievements Screen
-Build the Achievements tab from the wireframe. You get the data shape and 12 achievement names. Everything visual is your decision: layout, locked vs unlocked treatment, progress visualization, animations. Must use `GET /students/:id/achievements`.
+1. **Install Frontend Dependencies:**
+   ```bash
+   npm install
+   ```
 
-### B3. n8n Streak Workflow
-When a student completes their daily goal (3 sessions), fire a webhook to an n8n workflow. Set up an n8n instance (local Docker or n8n.cloud free tier), create a workflow that does something useful with the notification, and make it idempotent (same student + same day = 1 notification). Payload documented in `API-SPEC.md`.
+2. **Install Backend Dependencies & Seed DB:**
+   ```bash
+   cd server
+   npm install
+   npm run seed
+   ```
 
-### B4. Tests
-Write tests for your API. At minimum: pagination logic (cursor encoding/decoding, hasMore flag, edge cases) and the date format handling (epoch ms on list, ISO on detail).
+3. **Start the API Server:**
+   ```bash
+   npm run dev
+   ```
 
-### B5. Animations & Polish
-Meaningful transitions between screens, skeleton loading states (not spinners), haptic feedback, or micro-interactions that make the app feel native.
+4. **Start the Mobile Application:**
+   Open a separate terminal in the root directory:
+   ```bash
+   npx expo start
+   ```
 
 ---
 
-## What's provided
-
-```
-├── app/                    # Expo Router app with tab navigation
-│   ├── _layout.tsx         # Root layout, fonts loaded
-│   ├── (tabs)/
-│   │   ├── _layout.tsx     # Tab bar configured
-│   │   ├── index.tsx       # Dashboard placeholder
-│   │   ├── history.tsx     # History placeholder
-│   │   └── achievements.tsx # Achievements placeholder
-│   └── session/
-│       └── [id].tsx        # Session detail placeholder
-├── constants/
-│   └── Colors.ts           # Design tokens (colors, shadows, radii, spacing)
-├── types/
-│   └── api.ts              # TypeScript types for all API responses
-├── server/
-│   ├── src/
-│   │   ├── index.ts        # Express boilerplate
-│   │   ├── db.ts           # SQLite schema + connection
-│   │   └── seed.ts         # Seed script
-│   └── fixtures/           # JSON seed data
-├── API-SPEC.md             # Endpoint reference
-├── DECISIONS.md            # Fill this in (required)
-└── designs/
-    └── design-spec.html    # Open in browser for the visual reference
-```
-
-## Getting started
-
-```bash
-# Mobile app
-npm install
-npx expo start
-
-# Backend (separate terminal)
-cd server
-npm install
-npm run seed
-npm run dev
-```
-
-## How to submit
-
-You'll receive a submission form link in the assignment email. You'll need:
-
-1. Your GitHub repo link (public or invite @VibhorGautam)
-2. Video demo link (Loom, Google Drive, or YouTube)
-3. Which bonus challenges you completed
-
-## What we're evaluating
-
-We care about decisions more than polish. A thoughtful app with rough edges beats a pixel-perfect app that doesn't handle edge cases.
-
-Specifically:
-- How closely you match the design spec (Dashboard)
-- How you handle states the spec doesn't cover (loading, empty, error, pagination)
-- How you deal with the intentional API quirks (date formats, cursor pagination)
-- The quality of your DECISIONS.md answers
-- Code organization and TypeScript usage
-
-## Rules
-
-- You can use any libraries you want
-- You can restructure the starter code however you see fit
-- AI tools are fine to use, but your DECISIONS.md and video demo should reflect your own understanding
-- If something in the spec seems wrong or ambiguous, make a call and document it in DECISIONS.md
+## Technical and Architectural Decisions
+Please refer to the [DECISIONS.md](./DECISIONS.md) file in the root directory for detailed engineering explanations regarding state management, error handling, edge cases, scalability, and bonus challenge implementations.

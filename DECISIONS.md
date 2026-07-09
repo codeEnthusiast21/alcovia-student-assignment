@@ -78,3 +78,12 @@ How did you design the Achievements screen and how is achievement progression up
   * Meta achievements (`Legend` unlocking all other 11 badges)
 - **Interactive Detail Drawer**: Tapping a badge immediately loads full descriptions, dates unlocked, and detailed progress bar metrics inside an elegant, bottom-anchored panel.
 
+## (Bonus) Animations & Polish (B5)
+
+How did you make the app feel native and responsive?
+
+- **Pulsing Skeleton Loaders**: Implemented hardware-accelerated pulsing skeleton loaders (`Animated.loop` with native drivers) on both the Dashboard and History screens. This previews the screen layout and prevents visual layout shifts.
+- **Staggered Entry Transitions**: The Dashboard components slide up and fade in using a staggered sequence upon loading completion, creating a premium entry flow.
+- **Micro-interactions & Haptics**: Added haptic vibration feedback (`haptic.impactLight()`) on interactive actions like button triggers and list navigation to make the app feel tactile.
+
+

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {StyleSheet,View,Text,FlatList,ScrollView,TouchableOpacity,RefreshControl,ActivityIndicator,
+import {StyleSheet,View,Text,FlatList,ScrollView,TouchableOpacity,RefreshControl,ActivityIndicator,Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -67,6 +67,35 @@ export default function HistoryScreen() {
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Skeleton pulse animation
+  const pulseAnim = React.useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    let animation: Animated.CompositeAnimation | null = null;
+    if (loading) {
+      animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 0.7,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      animation.start();
+    }
+    return () => {
+      if (animation) {
+        animation.stop();
+      }
+    };
+  }, [loading]);
 
   // Fetch Page 1 of sessions
   const fetchSessions = useCallback(
@@ -145,14 +174,14 @@ export default function HistoryScreen() {
 
   // Render a skeleton loader card
   const renderSkeletonCard = () => (
-    <View style={styles.skeletonCard}>
+    <Animated.View style={[styles.skeletonCard, { opacity: pulseAnim }]}>
       <View style={styles.skeletonIcon} />
       <View style={styles.skeletonInfo}>
         <View style={styles.skeletonTitle} />
         <View style={styles.skeletonMeta} />
       </View>
       <View style={styles.skeletonCoins} />
-    </View>
+    </Animated.View>
   );
 
   // Loading skeleton state (renders 5 placeholder cards)
@@ -448,7 +477,6 @@ const styles = StyleSheet.create({
     borderRadius: Radii.statCard,
     paddingVertical: 14,
     paddingHorizontal: 16,
-    opacity: 0.6,
   },
   skeletonIcon: {
     width: 40,

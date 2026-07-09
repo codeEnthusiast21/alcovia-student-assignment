@@ -197,6 +197,18 @@ export default function SessionDetailScreen() {
             );
           })}
         </View>
+
+        {/* CTA: Start Another Session */}
+        <TouchableOpacity
+          style={styles.ctaButton}
+          activeOpacity={0.8}
+          onPress={() => {
+            router.push('/timer');
+          }}
+        >
+          <Ionicons name="play-circle" size={22} color="#FFF" />
+          <Text style={styles.ctaText}>Start Another Session</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -356,7 +368,6 @@ const styles = StyleSheet.create({
   },
   timelineItem: {
     flexDirection: 'row',
-    minHeight: 80,
   },
   timelineLeft: {
     alignItems: 'center',
@@ -370,6 +381,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
     borderWidth: 2,
     borderColor: Colors.surface,
+    marginTop: 4,
   },
   indicatorFocus: {
     backgroundColor: Colors.primary,
@@ -379,14 +391,15 @@ const styles = StyleSheet.create({
   },
   timelineLine: {
     position: 'absolute',
-    top: 6,
-    bottom: -6,
+    top: 10,
+    bottom: -10,
     width: 2,
     backgroundColor: Colors.border,
+    alignSelf: 'center',
   },
   timelineRight: {
     flex: 1,
-    paddingBottom: Spacing.lg,
+    paddingBottom: Spacing.md,
   },
   timelineEventHeader: {
     flexDirection: 'row',
@@ -409,5 +422,21 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.textSecondary,
     lineHeight: 18,
+  },
+  ctaButton: {
+    flexDirection: 'row',
+    backgroundColor: Colors.primary,
+    borderRadius: 14,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Spacing.xxl,
+    gap: 8,
+    ...Shadows.cta,
+  },
+  ctaText: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 16,
+    color: Colors.surface,
   },
 });

@@ -20,6 +20,35 @@ export default function DashboardScreen() {
   const [student, setStudent] = useState<Student | null>(null);
   const [stats, setStats] = useState<WeeklyStats | null>(null);
 
+  // Skeleton pulse animation
+  const pulseAnim = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    let animation: Animated.CompositeAnimation | null = null;
+    if (loading) {
+      animation = Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 0.7,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 0.3,
+            duration: 800,
+            useNativeDriver: true,
+          }),
+        ])
+      );
+      animation.start();
+    }
+    return () => {
+      if (animation) {
+        animation.stop();
+      }
+    };
+  }, [loading]);
+
 
   const anims = useRef([
     { opacity: new Animated.Value(0), y: new Animated.Value(15) }, // Stats Cards Row
@@ -97,9 +126,59 @@ export default function DashboardScreen() {
   // Loading state
   if (loading) {
     return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-        <Text style={styles.loadingText}>Loading your dashboard...</Text>
+      <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+        <ScrollView contentContainerStyle={styles.scrollContent} scrollEnabled={false}>
+          {/* Header Skeleton */}
+          <View style={styles.header}>
+            <View style={styles.greetingTextContainer}>
+              <Animated.View style={[styles.skeletonBlock, { width: 120, height: 22, opacity: pulseAnim }]} />
+              <Animated.View style={[styles.skeletonBlock, { width: 150, height: 14, marginTop: 8, opacity: pulseAnim }]} />
+            </View>
+            <Animated.View style={[styles.skeletonBlock, { width: 40, height: 40, borderRadius: 20, opacity: pulseAnim }]} />
+          </View>
+
+          {/* Stats Row Skeleton */}
+          <View style={styles.statsRow}>
+            {[1, 2, 3].map((i) => (
+              <View key={i} style={[styles.statCard, { backgroundColor: Colors.surface, justifyContent: 'flex-start', alignItems: 'flex-start', padding: Spacing.md }]}>
+                <Animated.View style={[styles.skeletonBlock, { width: 24, height: 24, borderRadius: 12, opacity: pulseAnim }]} />
+                <Animated.View style={[styles.skeletonBlock, { width: 40, height: 20, marginTop: 16, opacity: pulseAnim }]} />
+                <Animated.View style={[styles.skeletonBlock, { width: 55, height: 10, marginTop: 8, opacity: pulseAnim }]} />
+              </View>
+            ))}
+          </View>
+
+          {/* Chart Skeleton */}
+          <Text style={styles.sectionHeading}>This Week</Text>
+          <View style={styles.chartContainer}>
+            {[0.2, 0.4, 0.15, 0.5, 0.3, 0.45, 0.1].map((heightVal, idx) => (
+              <View key={idx} style={styles.chartCol}>
+                <View style={styles.barBackground}>
+                  <Animated.View
+                    style={[
+                      styles.barFill,
+                      { height: `${heightVal * 100}%`, backgroundColor: Colors.border, opacity: pulseAnim },
+                    ]}
+                  />
+                </View>
+                <Animated.View style={[styles.skeletonBlock, { width: 12, height: 12, marginTop: 8, opacity: pulseAnim }]} />
+              </View>
+            ))}
+          </View>
+
+          {/* Progress Card Skeleton */}
+          <Text style={styles.sectionHeading}>Today's Progress</Text>
+          <View style={styles.progressCard}>
+            <Animated.View style={[styles.skeletonBlock, { width: 60, height: 60, borderRadius: 30, opacity: pulseAnim }]} />
+            <View style={styles.progressTextContainer}>
+              <Animated.View style={[styles.skeletonBlock, { width: 130, height: 16, opacity: pulseAnim }]} />
+              <Animated.View style={[styles.skeletonBlock, { width: 90, height: 12, marginTop: 8, opacity: pulseAnim }]} />
+            </View>
+          </View>
+
+          {/* CTA Skeleton */}
+          <Animated.View style={[styles.skeletonBlock, { width: '100%', height: 54, borderRadius: 14, marginTop: Spacing.xl, opacity: pulseAnim }]} />
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -249,8 +328,8 @@ export default function DashboardScreen() {
             <View style={styles.progressRingWrapper}>
               <ProgressRing
                 size={72}
-                radius={40}
-                strokeWidth={7}
+                radius={30}
+                strokeWidth={6}
                 progress={stats.todayCompleted / stats.dailyGoal}
                 color={Colors.primary}
                 trackColor="#E5E7EB"
@@ -519,5 +598,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_500Medium',
     fontSize: 9,
     color: Colors.textSecondary,
+  },
+  skeletonBlock: {
+    backgroundColor: Colors.border,
+    borderRadius: 4,
   },
 });
