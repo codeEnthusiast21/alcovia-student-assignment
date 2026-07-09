@@ -9,8 +9,8 @@ I designed and built the application screens, API routes, and backend business l
 ## Completed Features & Deliverables
 
 ### 1. Mobile App (React Native / Expo Router)
-- **Dashboard**: Built with pixel-perfect accuracy following the design spec's dimensions, colors, typography (Inter), spacing, and shadows.
-- **History Screen**: Completed with cursor-based pagination, scroll-to-load-more, pull-to-refresh, user-friendly offline error recovery states, and empty states.
+- **Dashboard**: Built with pixel-perfect accuracy following the design specs.
+- **History Screen**: Completed with cursor-based pagination, scroll-to-load-more, pull-to-refresh and empty states.
 - **Session Detail Screen**: Created a detailed, connected vertical timeline showing focus intervals vs rest intervals, complete with a call-to-action loop to easily restart another session.
 - **Splash Screen & Adaptive Icon**: Refined the Android assets so that the logo renders cleanly on a native splash screen without any contrast outlines or borders.
 
