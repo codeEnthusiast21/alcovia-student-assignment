@@ -16,7 +16,7 @@ export interface Session {
   studentId: string;
   type: SessionType;
   durationMs: number;
-  coins: number;
+  coins: number;  
   status: SessionStatus;
   startedAt: number; // epoch milliseconds (list endpoint)
   completedAt: number | null;
